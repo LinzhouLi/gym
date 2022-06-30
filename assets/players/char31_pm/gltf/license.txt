@@ -1,0 +1,11 @@
+Model Information:
+* title:	char31
+* source:	https://sketchfab.com/3d-models/char31-575546ae308241019a248e4f9ef4f122
+* author:	bugrunner (https://sketchfab.com/bugrunner)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "char31" (https://sketchfab.com/3d-models/char31-575546ae308241019a248e4f9ef4f122) by bugrunner (https://sketchfab.com/bugrunner) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

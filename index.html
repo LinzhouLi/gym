@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MetaSpace</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="src/app.js"></script>
+    <style>
+        #blocker {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        #instructions {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+            font-size: 14px;
+            
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="blocker" style="z-index: 10;display:none">
+        <div id="instructions">
+            <p style="font-size:36px">
+                点击屏幕
+            </p>
+            <p>
+                移动: WASD<br/>
+                查看: MOUSE
+            </p>
+        </div>
+    </div>
+    <main class="wrap">
+    </main>
+</body>
