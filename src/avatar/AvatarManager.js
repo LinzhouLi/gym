@@ -25,7 +25,7 @@ class AvatarManager {
         male: {
           // 男性模型
           maxCount: [60, 500, 3500], // 每级LOD的instance数量
-          textureCount: 17, // 材质贴图数量
+          textureCount: [5, 9], // 材质贴图数量 [row, col]
           animationCount: 8,
           body: {
             // body
@@ -36,7 +36,7 @@ class AvatarManager {
         },
         female: {
           maxCount: [60, 500, 3500],
-          textureCount: 18,
+          textureCount: [5, 8],
           animationCount: 8,
           body: {
             // body
@@ -66,7 +66,7 @@ class AvatarManager {
     // this.psnr = await this.loadJSON("assets/crowd/PSNR.json"); // 峰值信噪比
     this.initFilePath();
     this.initAvatarParams();
-    this.adjustParam();
+    // this.adjustParam();
     // this.computeDisp();
   }
 
@@ -83,39 +83,39 @@ class AvatarManager {
 
       male: {
         highModelPath: "assets/crowd/model/male_high_merged.glb",
-        highAnimationPath:
-          "assets/crowd/animation/male_high_animations_merged.json",
-        highTexturePath: "assets/crowd/texture/maleTextureHigh.jpg",
+        highAnimationPath: "assets/crowd/animation/male_high_animations_merged.json",
+        highTexturePath: "assets/crowd/texture/maleTextureHigh.webp",
 
         mediumModelPath: "assets/crowd/model/male_medium_merged.glb",
-        mediumAnimationPath:
-          "assets/crowd/animation/male_medium_animations_merged.json",
-        mediumTexturePath: "assets/crowd/texture/maleTextureMedium.jpg",
+        mediumAnimationPath: "assets/crowd/animation/male_medium_animations_merged.json",
+        mediumTexturePath: "assets/crowd/texture/maleTextureMedium.webp",
 
         lowModelPath: "assets/crowd/model/male_low.glb",
-        lowTexturePath: "assets/crowd/texture/maleTextureLow.jpg",
+        lowTexturePath: "assets/crowd/texture/maleTextureLow.webp",
       },
 
       female: {
         highModelPath: "assets/crowd/model/female_high_merged.glb",
-        highAnimationPath:
-          "assets/crowd/animation/female_high_animations_merged.json",
-        highTexturePath: "assets/crowd/texture/femaleTextureHigh.jpg",
+        highAnimationPath: "assets/crowd/animation/female_high_animations_merged.json",
+        highTexturePath: "assets/crowd/texture/femaleTextureHigh.webp",
 
         mediumModelPath: "assets/crowd/model/female_medium_merged.glb",
-        mediumAnimationPath:
-          "assets/crowd/animation/female_medium_animations_merged.json",
-        mediumTexturePath: "assets/crowd/texture/femaleTextureMedium.jpg",
+        mediumAnimationPath: "assets/crowd/animation/female_medium_animations_merged.json",
+        mediumTexturePath: "assets/crowd/texture/femaleTextureMedium.webp",
 
         lowModelPath: "assets/crowd/model/female_low.glb",
-        lowTexturePath: "assets/crowd/texture/femaleTextureLow.jpg",
+        lowTexturePath: "assets/crowd/texture/femaleTextureLow.webp",
       },
     };
   }
 
   initAvatarParams() {
-    let time = this.clock.getElapsedTime();
+
+    const maleTexCount = this.manager.config.male.textureCount[0] * this.manager.config.male.textureCount[1];
+    const femaleTexCount = this.manager.config.female.textureCount[0] * this.manager.config.female.textureCount[1];
+    
     for (let i = 0; i < this.seatPositions.length; i++) {
+
       let param = {
         position: this.seatPositions[i],
         rotation: this.seats[i].slice(3, 9),
@@ -133,33 +133,38 @@ class AvatarManager {
           0.9 + 0.2 * Math.random(),
         ],
       };
+
       if (Math.random() < 0.5) {
         // 以0.5的概率生成男性
         param.animationType = Math.floor(
           Math.random() * this.manager.config.male.animationCount
         );
         param.textureType = [
-          Math.floor(Math.random() * this.manager.config.male.textureCount),
-          Math.floor(Math.random() * this.manager.config.male.textureCount),
-          Math.floor(Math.random() * this.manager.config.male.textureCount),
-          Math.floor(Math.random() * this.manager.config.male.textureCount),
+          Math.floor(Math.random() * maleTexCount),
+          Math.floor(Math.random() * maleTexCount),
+          Math.floor(Math.random() * maleTexCount),
+          Math.floor(Math.random() * maleTexCount),
         ];
         param.sex = "male";
-      } else {
+      } 
+      
+      else {
         // 以0.5的概率生成女性
         param.animationType = Math.floor(
           Math.random() * this.manager.config.female.animationCount
         );
         param.textureType = [
-          Math.floor(Math.random() * this.manager.config.female.textureCount),
-          Math.floor(Math.random() * this.manager.config.female.textureCount),
-          Math.floor(Math.random() * this.manager.config.female.textureCount),
-          Math.floor(Math.random() * this.manager.config.female.textureCount),
+          Math.floor(Math.random() * femaleTexCount),
+          Math.floor(Math.random() * femaleTexCount),
+          Math.floor(Math.random() * femaleTexCount),
+          Math.floor(Math.random() * femaleTexCount),
         ];
         param.sex = "female";
       }
       this.manager.params.push(param);
+
     }
+
   }
 
   adjustParam() {
@@ -199,8 +204,10 @@ class AvatarManager {
   }
 
   initAvatarParamsGreedly() {
-    const rowNum = [24, 34, 28],
-      col = 26;
+    const maleTexCount = this.manager.config.male.textureCount[0] * this.manager.config.male.textureCount[1];
+    const femaleTexCount = this.manager.config.female.textureCount[0] * this.manager.config.female.textureCount[1];
+    const rowNum = [24, 34, 28], col = 26;
+
     for (let l = 0; l < rowNum.length; l++) {
       const row = rowNum[l];
       for (let k = 0; k < 3; k++) {
@@ -256,29 +263,19 @@ class AvatarManager {
             };
             if (Math.random() < 0.5) {
               // 以0.5的概率生成男性
-              param.animationType = Math.floor(
-                Math.random() * this.manager.config.male.animationCount
-              );
+              param.animationType = Math.floor( Math.random() * this.manager.config.male.animationCount );
               param.textureType = [
-                Math.floor(
-                  Math.random() * this.manager.config.male.textureCount
-                ),
-                Math.floor(
-                  Math.random() * this.manager.config.male.textureCount
-                ),
-                Math.floor(
-                  Math.random() * this.manager.config.male.textureCount
-                ),
-                Math.floor(
-                  Math.random() * this.manager.config.male.textureCount
-                ),
+                Math.floor( Math.random() * maleTexCount ),
+                Math.floor( Math.random() * maleTexCount ),
+                Math.floor( Math.random() * maleTexCount ),
+                Math.floor( Math.random() * maleTexCount ),
               ];
               param.sex = "male";
               if (candidate.length > 0) {
                 let toSort = [];
                 for (
                   let index = 0;
-                  index < this.manager.config.male.textureCount;
+                  index < maleTexCount;
                   index++
                 ) {
                   let tmp = { position: [], textureType: [0, 0, 0, 0] };
@@ -314,7 +311,7 @@ class AvatarManager {
                 let toSort = [];
                 for (
                   let index = 0;
-                  index < this.manager.config.female.textureCount;
+                  index < femaleTexCount;
                   index++
                 ) {
                   let tmp = { position: [], textureType: [0, 0, 0, 0] };
@@ -361,13 +358,14 @@ class AvatarManager {
   }
 
   computePSNR(ava1, ava2) {
-    let diff = 0,
-      id1,
-      id2;
+    const maleTexCount = this.manager.config.male.textureCount[0] * this.manager.config.male.textureCount[1];
+    const femaleTexCount = this.manager.config.female.textureCount[0] * this.manager.config.female.textureCount[1];
+
+    let diff = 0, id1, id2;
     if (ava1.sex == "male") id1 = ava1.textureType[0];
-    else id1 = ava1.textureType[0] + this.manager.config.male.textureCount;
+    else id1 = ava1.textureType[0] + maleTexCount;
     if (ava2.sex == "male") id2 = ava2.textureType[0];
-    else id2 = ava2.textureType[0] + this.manager.config.male.textureCount;
+    else id2 = ava2.textureType[0] + femaleTexCount;
     diff = this.psnr[id1][id2];
     // 两人物距离
     let vec = [

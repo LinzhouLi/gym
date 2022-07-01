@@ -2,8 +2,8 @@
 
 precision highp float;
 uniform sampler2D textureData;
-uniform sampler2D lightMapData;
-uniform float textureCount;
+// uniform sampler2D lightMapData; // lightmap暂时不用
+uniform vec2 textureCount; // [row, col]
 uniform vec3 cameraPosition;
 uniform vec4 headUV;
 uniform vec4 handUV;
@@ -30,21 +30,21 @@ struct Material {
     float gloss;
 };
 
-int getBodyPart(float u, float v) { // 身体各部位贴图
+float getTextureIndex(float u, float v) {
 
     if (
         (u - headUV[0]) * (headUV[2] - u) > 0. &&
         (v - headUV[1]) * (headUV[3] - v) > 0.
-    ) { return 1; }
+    ) { return outTextureIndex[1]; }
     if (
         (u - handUV[0]) * (handUV[2] - u) > 0. &&
         (v - handUV[1]) * (handUV[3] - v) > 0.
-    ) { return 1; }
+    ) { return outTextureIndex[1]; }
     if (
         (u - bottomUV[0]) * (bottomUV[2] - u) > 0. &&
         (v - bottomUV[1]) * (bottomUV[3] - v) > 0.
-    ) { return 2; }
-    else { return 0; }
+    ) { return outTextureIndex[2]; }
+    else { return outTextureIndex[0]; }
 
 }
 
@@ -53,11 +53,12 @@ vec4 computeTextureColor() { // 贴图颜色
     float u = outUV.x;
     float v = outUV.y;
     if (u > 0.5) u = 1. - u; // 对称
-    if (u > 0.4985) u = 0.4985; // 去除中缝
     u = u * 2.;
-    bodyPart = getBodyPart(u, v);
-    float textureIndex = outTextureIndex[bodyPart];
-    u = (u + textureIndex) / textureCount;
+    float textureIndex = getTextureIndex(u, v);
+    float col = float(int(textureIndex) % int(textureCount[1]));
+    float row = (textureIndex - col) / textureCount[1];
+    u = (u * 0.95 + col) / textureCount[1];
+    v = (v + row) / textureCount[0];
     vec4 color = texture( textureData, vec2(u, v) );
     return color;
 

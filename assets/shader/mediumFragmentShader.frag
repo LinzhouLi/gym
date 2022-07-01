@@ -2,8 +2,8 @@
 
 precision highp float;
 uniform sampler2D textureData;
-uniform sampler2D lightMapData;
-uniform float textureCount;
+// uniform sampler2D lightMapData;
+uniform vec2 textureCount; // [row, col]
 uniform vec3 cameraPosition;
 uniform vec4 headUV;
 uniform vec4 handUV;
@@ -46,15 +46,17 @@ float getTextureIndex(float u, float v) {
 
 }
 
-vec4 computeTextureColor() {
+vec4 computeTextureColor() { // 贴图颜色
 
     float u = outUV.x;
     float v = outUV.y;
     if (u > 0.5) u = 1. - u; // 对称
-    if (u > 0.497) u = 0.497; // 去除中缝
     u = u * 2.;
     float textureIndex = getTextureIndex(u, v);
-    u = (u + textureIndex) / textureCount;
+    float col = float(int(textureIndex) % int(textureCount[1]));
+    float row = (textureIndex - col) / textureCount[1];
+    u = (u * 0.95 + col) / textureCount[1];
+    v = (v + row) / textureCount[0];
     vec4 color = texture( textureData, vec2(u, v) );
     return color;
 

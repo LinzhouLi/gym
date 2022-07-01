@@ -9,7 +9,7 @@ class InstancedGroup {
         morphTargetUrl,
         textureUrl,
         lightMapUrl,
-        textureCount,
+        textureCount, // [row, col]
         camera,
         clock,
     ) {
@@ -97,7 +97,7 @@ class InstancedGroup {
         material.fragmentShader = fragmentShader;
 
         this.uniforms = {
-            textureCount: { value: this.textureCount },
+            textureCount: { value: new THREE.Vector2(...this.textureCount) },
             textureData: { value: textureData },
             headUV: { value: new THREE.Vector4(...this.body.head) },
             handUV: { value: new THREE.Vector4(...this.body.hand) },
