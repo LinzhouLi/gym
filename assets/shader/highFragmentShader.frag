@@ -16,8 +16,6 @@ in vec3 outPosition;
 
 out vec4 fragColor;
 
-int bodyPart; // 身体部分
-
 struct PointLight {
     vec3 position;
     vec3 diffuseColor;
