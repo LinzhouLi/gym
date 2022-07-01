@@ -188,6 +188,26 @@ class AvatarManager {
     }
   }
 
+  setWaveAnimation(param, time) {
+    if (time > param.animationEndTime) {
+      let delta = (17 + Math.random() * 22) / param.animationSpeed;
+      delta /= 5;
+      let Fun = (t, x, y) => {
+        let freqency = 0.2,//频率
+          intension = 10,//波浪边缘模糊程度
+          WaveCount = 6;//同时几个波峰
+        return intension * Math.sin(2 * Math.PI * t * freqency + WaveCount*Math.atan2(y, x)) + 0.5;
+      }; //状态函数
+      let status = Fun(time, param.position[0], param.position[2]);
+        if (Math.random() > status)//坐下
+          param.animationType = Math.floor(Math.random() * 5) + 1;
+        else//站起
+          param.animationType = Math.floor(Math.random() * 3) + 6;
+      param.animationStartTime = time;
+      param.animationEndTime = time + Math.floor(delta);
+    }
+  }
+
   setAvatarAnimation(param, time) {
     if (time > param.animationEndTime) {
       let delta;
@@ -417,7 +437,8 @@ class AvatarManager {
     for (let i = 0; i < lod.length; i++) {
       if (lod[i] != -1) {
         let param = this.manager.params[i];
-        this.setAvatarAnimation(param, time);
+        this.setAvatarAnimation(param, time); // 原人物动作控制
+        // this.setWaveAnimation(param, time); // 人浪
         param.LOD = Math.max(lod[i], minFinishedLOD);
         param.index = lodCount[param.sex][param.LOD]++;
         this.setInstanceParam(param);
