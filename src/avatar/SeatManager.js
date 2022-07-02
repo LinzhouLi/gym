@@ -759,6 +759,9 @@ class SeatManager {
       i[2] = i[2] / 3;
       return i;
     });
+
+    this.shuffle(this.positions) // 打乱顺序
+
     console.log(this.positions[1]);
 
     console.log("总人数：", this.positions.length);
@@ -823,5 +826,18 @@ class SeatManager {
       });
     });
   }
+
+  shuffle(arr) {
+    var l = arr.length
+    var index, temp
+    while(l>0){
+        index = Math.floor(Math.random()*l)
+        temp = arr[l-1]
+        arr[l-1] = arr[index]
+        arr[index] = temp
+        l--
+    }
+    return arr
+}
 }
 export { SeatManager };
