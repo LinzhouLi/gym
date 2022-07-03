@@ -188,24 +188,24 @@ class AvatarManager {
     }
   }
 
-  setWaveAnimation(param, time) {
-    if (time > param.animationEndTime) {
-      let delta = (9 + Math.random() * 27) / param.animationSpeed;
-      let Fun = (t, x, y) => {
-        let freqency = 0.1,//频率
-          intension = 10,//波浪边缘模糊程度
-          WaveCount = 6;//同时几个波峰
-        return intension * Math.sin(2 * Math.PI * t * freqency + WaveCount*Math.atan2(y, x)) + 0.5;
-      }; //状态函数
-      let status = Fun(time, param.position[0], param.position[2]);
-        if (Math.random() > status)//坐下
-          param.animationType = Math.floor(Math.random() * 4) + 2; // 去掉敲键盘的动作
-        else//站起
-          param.animationType = Math.floor(Math.random() * 3) + 6;
-      param.animationStartTime = time;
-      param.animationEndTime = time + Math.floor(delta);
-    }
-  }
+  setWaveAnimation(param, time) {
+      if (time > param.animationEndTime) {
+        let delta = (13 + Math.random() * 19) / param.animationSpeed;
+        let Fun = (t, x, y) => {
+          let freqency = 0.1,//频率
+            intension = 10,//波浪边缘模糊程度
+            WaveCount = 5;//同时几个波峰
+          return intension * Math.sin(2 * Math.PI * t * freqency + WaveCount*Math.atan2(y, x)) + 0.5;
+        }; //状态函数
+        let status = Fun(time, param.position[0], param.position[2]);
+          if (Math.random() > status)//坐下
+            param.animationType = Math.floor(Math.random() * 5) + 1;
+          else//站起
+            param.animationType = Math.floor(Math.random() * 3) + 6;
+        param.animationStartTime = time;
+        param.animationEndTime = time + delta;
+      }
+    }
 
   setAvatarAnimation(param, time) {
     if (time > param.animationEndTime) {
